@@ -15,10 +15,6 @@ app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))
 })
 
-app.use("/favicon.ico",function(req, res) {
-  res.sendStatus(200);
-})
-
 app.use(function(req, res) {
   res.status(404);
   res.send("Page Not Found. Sorry :((")
