@@ -20,13 +20,13 @@ app.use("/favicon.ico",function(req, res) {
 })
 
 app.use(function(req, res) {
-  res.sendStatus(404);
+  res.status(404);
   res.send("Page Not Found. Sorry :((")
 })
 
 // var path = require('path');
 // var cookieParser = require('cookie-parser');
-// var logger = require('morgan');
+var logger = require('morgan');
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
@@ -37,7 +37,7 @@ app.use(function(req, res) {
 // app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// app.use(logger('dev'));
+app.use(logger('dev'));
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
