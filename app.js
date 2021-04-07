@@ -20,7 +20,7 @@ app.use("/favicon.ico",function(req, res) {
 })
 
 app.use(function(req, res) {
-  res.sendStatus(404);
+  res.status(404);
   res.send("Page Not Found. Sorry :((")
 })
 
