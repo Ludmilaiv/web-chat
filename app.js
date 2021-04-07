@@ -1,10 +1,18 @@
 var createError = require('http-errors');
 var express = require('express');
+const config = require("./config");
+const fs = require("fs");
+const path = require("path");
 
 var app = express();
 
-// var logger = require('morgan');
-// app.use(logger('request processed: :date[web] :method :url :status - :response-time ms'));
+var logger = require('morgan');
+
+app.use(logger(config.get("log_format")));
+
+const logStream = fs.createWriteStream(path.join(__dirname, 'logs.log'), { flags: 'a' });
+
+app.use(logger(config.get("log_format"), { stream: logStream }))
 
 app.get("/",function(req, res) {
   res.end("Hello");
@@ -17,10 +25,6 @@ app.get("/test",function(req, res) {
 app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))
 })
-
-// app.use("/favicon.ico",function(req, res) {
-//   res.sendStatus(200);
-// })
 
 app.use(function(req, res) {
   res.status(404);
