@@ -3,10 +3,14 @@ var express = require('express');
 const config = require("./config");
 const fs = require("fs");
 const path = require("path");
+const favicon = require('serve-favicon')
 
 var app = express();
 
 var logger = require('morgan');
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use(logger(config.get("log_format")));
 
@@ -14,8 +18,14 @@ const logStream = fs.createWriteStream(path.join(__dirname, 'logs.log'), { flags
 
 app.use(logger(config.get("log_format"), { stream: logStream }))
 
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get("/",function(req, res) {
-  res.end("Hello");
+  //res.end("Hello");
+  res.render("index", {title: "Web-chat", 
+                       date: (new Date()).toDateString()});
 })
 
 app.get("/test",function(req, res) {
@@ -28,8 +38,11 @@ app.use("/forbidden",function(req, res, next) {
 
 app.use(function(req, res) {
   res.status(404);
-  res.send("Page Not Found. Sorry :((")
+  //res.send("Page Not Found. Sorry :((")
+  res.render("error404");
 })
+
+
 
 // var path = require('path');
 // var cookieParser = require('cookie-parser');
@@ -41,13 +54,11 @@ app.use(function(req, res) {
 
 
 // // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
