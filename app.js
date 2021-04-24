@@ -3,7 +3,9 @@ var express = require('express');
 const config = require("./config");
 const fs = require("fs");
 const path = require("path");
-const favicon = require('serve-favicon')
+const favicon = require('serve-favicon');
+var indexRouter = require('./routes/index');
+var testRouter = require('./routes/test');
 
 var app = express();
 
@@ -22,15 +24,9 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/",function(req, res) {
-  //res.end("Hello");
-  res.render("index", {title: "Web-chat", 
-                       date: (new Date()).toDateString()});
-})
+app.use('/', indexRouter);
 
-app.get("/test",function(req, res) {
-  res.end("test");
-})
+app.use('/test', testRouter);
 
 app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))
@@ -38,17 +34,13 @@ app.use("/forbidden",function(req, res, next) {
 
 app.use(function(req, res) {
   res.status(404);
-  //res.send("Page Not Found. Sorry :((")
   res.render("error404");
 })
 
 
 
-// var path = require('path');
 // var cookieParser = require('cookie-parser');
 
-
-// var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 
 
@@ -59,8 +51,6 @@ app.use(function(req, res) {
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 
-
-// app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
 // // catch 404 and forward to error handler
