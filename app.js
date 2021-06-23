@@ -5,9 +5,9 @@ const fs = require("fs");
 const path = require("path");
 const favicon = require('serve-favicon');
 const expressLayouts = require('express-ejs-layouts');
-var indexRouter = require('./routes/index');
-var testRouter = require('./routes/test');
-var regRouter = require('./routes/reg');
+const indexRouter = require('./routes/index');
+const testRouter = require('./routes/test');
+const regRouter = require('./routes/reg');
 
 var app = express();
 
