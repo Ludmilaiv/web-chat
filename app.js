@@ -7,6 +7,7 @@ const favicon = require('serve-favicon');
 const expressLayouts = require('express-ejs-layouts');
 var indexRouter = require('./routes/index');
 var testRouter = require('./routes/test');
+var regRouter = require('./routes/reg');
 
 var app = express();
 
@@ -31,6 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 app.use('/test', testRouter);
+
+app.use('/reg', regRouter);
 
 app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))
