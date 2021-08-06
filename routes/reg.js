@@ -1,7 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 const userScheme = new Schema({
   login: {
@@ -21,8 +20,8 @@ userScheme.methods.done = function () {
 }
 const User = mongoose.model('User', userScheme);
 
-router.get('/:login/:password', function(req, res, next) {
-  let user = new User({login: req.params.login, password: req.params.password});
+router.post('/', function(req, res, next) {
+  let user = new User({login: req.body.userName, password: req.body.password});
   user.save(function (err, docs) {
     if (err) return console.error(err);
     user.done();

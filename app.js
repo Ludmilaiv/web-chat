@@ -8,8 +8,13 @@ const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require('./routes/index');
 const testRouter = require('./routes/test');
 const regRouter = require('./routes/reg');
+const registerRouter = require('./routes/register');
+//const bodyParser = require("body-parser"); //для старой версии express
 
 var app = express();
+
+//app.use(bodyParser.urlencoded({ extended: ture})); //для старой версии express
+app.use(express.urlencoded({extended: true}));
 
 app.use(expressLayouts);
 app.set('layout', './layouts/main-layout');
@@ -34,6 +39,8 @@ app.use('/', indexRouter);
 app.use('/test', testRouter);
 
 app.use('/reg', regRouter);
+
+app.use('/register', registerRouter);
 
 app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))
