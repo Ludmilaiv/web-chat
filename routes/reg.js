@@ -21,12 +21,37 @@ userScheme.methods.done = function () {
 const User = mongoose.model('User', userScheme);
 
 router.post('/', function(req, res, next) {
-  let user = new User({login: req.body.userName, password: req.body.password});
-  user.save(function (err, docs) {
-    if (err) return console.error(err);
-    user.done();
-    res.send(`Пользователь ${user.login} успешно зарегистрирован`)
-  });
+  User.findOne({login: req.body.userName}, function(err, doc) {
+    if (!doc) {
+      let user = new User({login: req.body.userName, password: req.body.password});
+      user.save(function (err, docs) {
+        if (err) {
+          if (err.errors.login) {
+            res.render("register", {
+              errSelector: "userName", title:"Web-chat", 
+              password: req.body.password, login: req.body.userName
+            })
+          }
+          else if (err.errors.password) {
+            res.render("register", {
+              errSelector: "password", title:"Web-chat", 
+              password: req.body.password, login: req.body.userName
+            })
+          }
+          return console.error(err);
+        }
+        user.done();
+        res.send(`Пользователь ${user.login} успешно зарегистрирован`)
+      });
+    } else {
+      res.render("register", {
+        errMess: "Пользователь с таким логином уже существует",
+        errSelector: "userName", title:"Web-chat", 
+        password: req.body.password, login: req.body.userName
+      })
+    }
+  })
+  
 });
 
 module.exports = router;
