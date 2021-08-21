@@ -1,26 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const userScheme = new Schema({
-  login: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength:6,
-    maxlength:20
-  }
-});
-userScheme.methods.done = function () {
-  const greeting = `User ${this.login} has been successfully registered`;
-  console.log(greeting);
-}
-const User = mongoose.model('User', userScheme);
+const User = require("../models/user.js");
 
-router.post('/', function(req, res, next) {
+exports.registerPage = function(req, res) {
+  res.render("register", {title: "Web-chat"});
+}
+
+exports.addUser = function(req, res) {
   User.findOne({login: req.body.userName}, function(err, doc) {
     if (!doc) {
       let user = new User({login: req.body.userName, password: req.body.password});
@@ -51,7 +35,5 @@ router.post('/', function(req, res, next) {
       })
     }
   })
-  
-});
+}
 
-module.exports = router;

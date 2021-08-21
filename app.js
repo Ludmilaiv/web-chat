@@ -5,10 +5,9 @@ const fs = require("fs");
 const path = require("path");
 const favicon = require('serve-favicon');
 const expressLayouts = require('express-ejs-layouts');
-const indexRouter = require('./routes/index');
+const homeRouter = require('./routes/homeRouter');
 const testRouter = require('./routes/test');
-const regRouter = require('./routes/reg');
-const registerRouter = require('./routes/register');
+const userRouter = require('./routes/userRouter');
 //const bodyParser = require("body-parser"); //для старой версии express
 
 var app = express();
@@ -34,13 +33,11 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', homeRouter);
 
 app.use('/test', testRouter);
 
-app.use('/reg', regRouter);
-
-app.use('/register', registerRouter);
+app.use('/users', userRouter);
 
 app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))

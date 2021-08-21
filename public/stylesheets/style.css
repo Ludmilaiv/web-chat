@@ -16,3 +16,10 @@ main {
   background-color: cornsilk;
   padding: 20px;
 }
+.menu {
+  padding: 0;
+  margin: 0;
+}
+.menu li {
+    display: inline-block;
+}
