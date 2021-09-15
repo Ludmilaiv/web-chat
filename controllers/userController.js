@@ -1,11 +1,13 @@
 const User = require("../models/user.js");
 
 exports.registerPage = function(req, res) {
-  res.render("register", {title: "Web-chat"});
+  res.render("register", {title: "Web-chat",
+  user: req.session.user || null});
 }
 
 exports.authorizationPage = function(req, res) {
-  res.render("authorization", {title: "Web-chat"});
+  res.render("authorization", {title: "Web-chat",
+  user: req.session.user || null});
 }
 
 exports.addUser = function(req, res) {
@@ -17,13 +19,15 @@ exports.addUser = function(req, res) {
           if (err.errors.login) {
             res.render("register", {
               errSelector: "userName", title:"Web-chat", 
-              password: req.body.password, login: req.body.userName
+              password: req.body.password, login: req.body.userName,
+              user: req.session.user || null
             })
           }
           else if (err.errors.password) {
             res.render("register", {
               errSelector: "password", title:"Web-chat", 
-              password: req.body.password, login: req.body.userName
+              password: req.body.password, login: req.body.userName,
+              user: req.session.user || null
             })
           }
           return console.error(err);
@@ -35,7 +39,8 @@ exports.addUser = function(req, res) {
       res.render("register", {
         errMess: "Пользователь с таким логином уже существует",
         errSelector: "userName", title:"Web-chat", 
-        password: req.body.password, login: req.body.userName
+        password: req.body.password, login: req.body.userName,
+        user: req.session.user || null
       })
     }
   })
@@ -49,11 +54,18 @@ exports.login = function(req, res) {
       res.render("authorization", {
         errMessage: "Incorrect password or username",
         title: "Web-chat",
-        password: req.body.password, login: req.body.userName
+        password: req.body.password, login: req.body.userName,
+        user: req.session.user || null
       })
     } else {
+      req.session.user = {id: doc._id, name: doc.login}
       res.redirect("/")
     }
   })
+}
+
+exports.logout = function(req, res) {
+  delete req.session.user;
+  res.redirect("/")
 }
 

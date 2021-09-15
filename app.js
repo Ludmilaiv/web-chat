@@ -8,9 +8,16 @@ const expressLayouts = require('express-ejs-layouts');
 const homeRouter = require('./routes/homeRouter');
 const testRouter = require('./routes/test');
 const userRouter = require('./routes/userRouter');
+const session = require('express-session');
 //const bodyParser = require("body-parser"); //для старой версии express
 
-var app = express();
+const app = express();
+
+app.use(
+  session({
+    secret: 'webChat2734',
+  })
+)
 
 //app.use(bodyParser.urlencoded({ extended: ture})); //для старой версии express
 app.use(express.urlencoded({extended: true}));

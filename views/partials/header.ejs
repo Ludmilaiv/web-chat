@@ -4,7 +4,14 @@
     <ul class="menu">
       <li><a href="/">Home</a></li>
       <li><a href="/about">About</a></li>
-      <li><a href="/users/register">Register</a></li>
+      <% if (!user) { %>
+        <li><a href="/users/register">Register</a></li>
+        <li><a href="/users/authorization">Log in</a></li>
+      <% } else { %>
+        <li><a href="#">Chat</a></li>
+        <li><a href="/users/logout">Log out</a></li>
+        <li>You are <%= user.name %></li>
+      <% } %>
     </ul>
   </nav>
 </header>
