@@ -1,0 +1,14 @@
+<h3>Authorization</h3>
+<form action="/users/login" method="post">
+  <% if (typeof errMessage !== 'undefined') { %>
+    <span><%= errMessage %></span><br>
+  <% } %>
+  <label for="userName">Login</label><br>
+  <input type="text" name="userName" 
+  <%= (typeof login !== 'undefined') ? `value=${login}`: '' %> /><br><br>
+  <label for="password">Password</label><br>
+  <input type="password" name="password" 
+   <%= (typeof password !== 'undefined') ? `value=${password}`: '' %> /><br><br>
+  <input type="submit" value="Log in" />
+</form>
+

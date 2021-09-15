@@ -4,6 +4,10 @@ exports.registerPage = function(req, res) {
   res.render("register", {title: "Web-chat"});
 }
 
+exports.authorizationPage = function(req, res) {
+  res.render("authorization", {title: "Web-chat"});
+}
+
 exports.addUser = function(req, res) {
   User.findOne({login: req.body.userName}, function(err, doc) {
     if (!doc) {
@@ -33,6 +37,22 @@ exports.addUser = function(req, res) {
         errSelector: "userName", title:"Web-chat", 
         password: req.body.password, login: req.body.userName
       })
+    }
+  })
+}
+
+exports.login = function(req, res) {
+  User.findOne({
+    login: req.body.userName, password: req.body.password
+  }, function(err, doc) {
+    if (!doc) {
+      res.render("authorization", {
+        errMessage: "Incorrect password or username",
+        title: "Web-chat",
+        password: req.body.password, login: req.body.userName
+      })
+    } else {
+      res.redirect("/")
     }
   })
 }
