@@ -9,6 +9,7 @@ const homeRouter = require('./routes/homeRouter');
 const testRouter = require('./routes/test');
 const userRouter = require('./routes/userRouter');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 //const bodyParser = require("body-parser"); //для старой версии express
 
 const app = express();
@@ -16,6 +17,9 @@ const app = express();
 app.use(
   session({
     secret: 'webChat2734',
+    store: MongoStore.create({ 
+      mongoUrl: config.get('DB_url')
+    })
   })
 )
 
