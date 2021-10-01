@@ -33,7 +33,7 @@ exports.addUser = function(req, res) {
           return console.error(err);
         }
         user.done();
-        res.send(`Пользователь ${user.login} успешно зарегистрирован`)
+        res.render("successful_reg", {login: user.login, title: "Web-chat", user: null});
       });
     } else {
       res.render("register", {
