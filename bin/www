@@ -9,6 +9,7 @@ const debug = require('debug')('web-chat:server');
 const http = require('http');
 const config = require('../config');
 const mongoose = require('mongoose');
+const { SocketAddress } = require( "net" );
 
 /**
  * Get port from environment and store in Express.
@@ -32,6 +33,10 @@ io.use(function(socket, next) {
 io.on('connection', function(socket) {
   const user = socket.request.session.user;
   console.log(`A user ${user.name} connected`);
+  socket.on('message', function(data) {
+    console.log(`A user ${user.name} send message: ${data}`);
+    io.sockets.send({userName: user.name, text: data});
+  })
 })
 
 /**
