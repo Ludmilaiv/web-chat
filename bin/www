@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('web-chat:server');
-var http = require('http');
+const {app, sessionMiddleware} = require('../app');
+const debug = require('debug')('web-chat:server');
+const http = require('http');
 const config = require('../config');
 const mongoose = require('mongoose');
 
@@ -21,7 +21,18 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
+
+const io = require('socket.io')(server);
+
+io.use(function(socket, next) {
+  sessionMiddleware(socket.request, socket.request.res, next);
+})
+
+io.on('connection', function(socket) {
+  const user = socket.request.session.user;
+  console.log(`A user ${user.name} connected`);
+})
 
 /**
  * Listen on provided port, on all network interfaces.

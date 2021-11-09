@@ -8,20 +8,21 @@ const expressLayouts = require('express-ejs-layouts');
 const homeRouter = require('./routes/homeRouter');
 const testRouter = require('./routes/test');
 const userRouter = require('./routes/userRouter');
+const chatRouter = require('./routes/chatRouter');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 //const bodyParser = require("body-parser"); //для старой версии express
 
 const app = express();
 
-app.use(
-  session({
-    secret: 'webChat2734',
-    store: MongoStore.create({ 
-      mongoUrl: config.get('DB_url')
-    })
+const sessionMiddleware = session({
+  secret: 'webChat2734',
+  store: MongoStore.create({ 
+    mongoUrl: config.get('DB_url')
   })
-)
+})
+
+app.use(sessionMiddleware);
 
 //app.use(bodyParser.urlencoded({ extended: ture})); //для старой версии express
 app.use(express.urlencoded({extended: true}));
@@ -49,6 +50,8 @@ app.use('/', homeRouter);
 app.use('/test', testRouter);
 
 app.use('/users', userRouter);
+
+app.use('/chat', chatRouter);
 
 app.use("/forbidden",function(req, res, next) {
   next(createError(500, "Woops! You can't come here"))
@@ -90,4 +93,4 @@ app.use(function(err, req, res, next) {
   res.render('error', {status: err.status || 500, layout: './layouts/error-layout'});
 });
 
-module.exports = app;
+module.exports = {app, sessionMiddleware};
