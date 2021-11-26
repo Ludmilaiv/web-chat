@@ -6,6 +6,9 @@ form.addEventListener("submit", function(event) {
   const messageBox = document.getElementById("messageBox");
   if (messageBox.value) {
     socket.send(messageBox.value);
+    /** Задание 1 */
+    messageBox.value = "";
+    /** -------- */
   } 
 })
 

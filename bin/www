@@ -9,7 +9,10 @@ const debug = require('debug')('web-chat:server');
 const http = require('http');
 const config = require('../config');
 const mongoose = require('mongoose');
-const { SocketAddress } = require( "net" );
+
+/** Для Задания 4 */
+const Message = require('../models/message');
+/** ------------ */
 
 /**
  * Get port from environment and store in Express.
@@ -30,11 +33,27 @@ io.use(function(socket, next) {
   sessionMiddleware(socket.request, socket.request.res, next);
 })
 
+/** Для Задания 4 */
+function saveMessage(userName, text) {
+  let message = new Message({userName, text});
+  message.save(function (err, docs) {
+    if (err) return console.error(err);
+    console.log(`message "${text}" from ${userName} successfully saved`);
+  });
+}
+/** ------------ */
+
 io.on('connection', function(socket) {
   const user = socket.request.session.user;
   console.log(`A user ${user.name} connected`);
   socket.on('message', function(data) {
     console.log(`A user ${user.name} send message: ${data}`);
+    /** ЗАДАНИЕ 3 */ 
+    data = data.replace('<','').replace('>','');
+    /** -------- */ 
+    /** Для Задания 4 */
+    saveMessage(user.name, data);
+    /** ------------ */
     io.sockets.send({userName: user.name, text: data});
   })
 })

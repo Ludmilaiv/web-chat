@@ -3,7 +3,13 @@
   <textarea id="messageBox" cols="50" rows="3" placeholder="Input your message"></textarea>
   <br>
   <input type="submit" id="submit">
-  <div id="chatBox"></div>
+  <div id="chatBox">
+    <!-- Для задания 4 -->
+    <% for(let i=0; i<messages.length; i++) {%>
+      <p><b><%= messages[i].userName %>: </b><%= messages[i].text %><p>
+    <%} %>
+    <!------------------->
+  </div>
 </form>
 <script src="/socket.io/socket.io.js"></script>
 <script src="scripts/script.js"></script>
